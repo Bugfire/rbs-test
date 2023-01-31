@@ -1,0 +1,4 @@
+class Test
+  def test_ok: (::Integer) -> ::Integer
+  def test_ng: (::Integer]) -> ::Integer
+end
