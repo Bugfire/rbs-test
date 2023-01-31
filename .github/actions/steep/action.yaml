@@ -1,0 +1,14 @@
+name: Steep
+runs:
+  using: "composite"
+  steps:
+    - uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+        ruby-version: '3.0'
+    - run: bundle install
+      shell: bash
+    - run: echo "::add-matcher::${{ github.action_path }}/steep-matcher.json"
+      shell: bash
+    - run: bundle exec steep check
+      shell: bash

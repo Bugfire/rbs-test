@@ -1,0 +1,33 @@
+permissions:
+  contents: read
+
+name: Test
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  steep:
+    name: Steep
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v3
+      - name: Steep
+        uses: ./.github/actions/steep
+  rbs-test:
+    name: RBS-Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: '3.0'
+      - run: bundle install
+      - run: bundle exec ruby rbs_test.rb
